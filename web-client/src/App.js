@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
 class App extends Component {
   constructor(props) {
@@ -12,12 +12,17 @@ class App extends Component {
     fetch("http://localhost:5000/")
       .then(response => response.json())
       .then(data => {
-        this.setState({ message: data.message });
+        this.setState({message: data.message});
       });
   }
 
   render() {
-    return <div>{this.state.message}</div>;
+    return (
+      <div>
+        <h3>Server message:</h3>
+        {this.state.message}
+      </div>
+    )
   }
 }
 
