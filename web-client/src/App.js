@@ -1,29 +1,45 @@
-import React, {Component} from "react";
+import React, {useEffect, useState} from 'react';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: "Loading...",
-    };
-  }
+export default function App() {
+  const [images, updateImages] = useState({});
 
-  componentDidMount() {
-    fetch("http://localhost:5000/")
-      .then(response => response.json())
-      .then(data => {
-        this.setState({message: data.message});
-      });
-  }
+  useEffect(() => {
+    fetch('http://localhost:5000/')
+      .then(response => console.log(response.json()))
+  });
 
-  render() {
-    return (
-      <div>
-        <h3>Server message:</h3>
-        {this.state.message}
-      </div>
-    )
-  }
+  useEffect((gifs) => {
+    updateImages({
+      list: gifs
+    });
+  }, [images]);
+
+  const search = (event) => {
+    if (event.key === 'Enter') {
+      fetch('http://api.giphy.com/v1/gifs/search?api_key=BazmPWlcSFXdpZTGesTTPNsjlt1MuhBH&q=' + event.target.value)
+        .then(response => response.json())
+        .then(response => {
+          updateImages({
+            list: response.data
+          });
+        })
+        .catch(err => console.log(err));
+      console.log(images.list);
+    }
+  };
+
+  return (
+    <div>
+      <h3>Search Giphy:</h3>
+      <input
+        onKeyDown={(e) => {search(e)}}
+      />
+      <ul>
+        {images.list.map((image) => {
+          <img src={image.src} />
+        })}
+      </ul>
+    </div>
+  )
+
 }
-
-export default App;
