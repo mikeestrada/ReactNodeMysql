@@ -16,7 +16,7 @@ export default function App() {
 
   const search = (event) => {
     if (event.key === 'Enter') {
-      fetch('http://api.giphy.com/v1/gifs/search?api_key=BazmPWlcSFXdpZTGesTTPNsjlt1MuhBH&q=' + event.target.value)
+      fetch('http://api.giphy.com=' + event.target.value)
         .then(response => response.json())
         .then(response => {
           updateImages({
