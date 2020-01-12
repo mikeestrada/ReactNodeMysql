@@ -1,22 +1,13 @@
 import React, {useEffect, useState} from 'react';
 
 export default function App() {
-  const [images, updateImages] = useState({});
+  const [images, updateImages] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch('http://localhost:5000/')
-      .then(response => console.log(response.json()))
-  });
-
-  useEffect((gifs) => {
-    updateImages({
-      list: gifs
-    });
-  }, [images]);
-
-  const search = (event) => {
+  const search = async(event) => {
     if (event.key === 'Enter') {
-      fetch('http://api.giphy.com=' + event.target.value)
+      setLoading(true);
+      await fetch('http://api.giphy.com/v1/gifs/search?api_key=BazmPWlcSFXdpZTGesTTPNsjlt1MuhBH&q=' + event.target.value)
         .then(response => response.json())
         .then(response => {
           updateImages({
@@ -24,6 +15,7 @@ export default function App() {
           });
         })
         .catch(err => console.log(err));
+      setLoading(false);
       console.log(images.list);
     }
   };
@@ -32,13 +24,18 @@ export default function App() {
     <div>
       <h3>Search Giphy:</h3>
       <input
-        onKeyDown={(e) => {search(e)}}
+        onKeyDown={(e) => {
+          search(e)
+        }}
       />
+      { isLoading && <div>loading gifs</div> }
+      { !isLoading &&
       <ul>
         {images.list.map((image) => {
-          <img src={image.src} />
+          return <li key={image.id}><img alt="img" src={image.images.downsized.url}/></li>
         })}
       </ul>
+      }
     </div>
   )
 
