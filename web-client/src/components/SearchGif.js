@@ -5,7 +5,7 @@ export default function SearchGif() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('localhost:5000')
+    fetch('http://localhost:5000')
       .then(response => response.json())
       .then(response => {
         console.log(response);
@@ -30,7 +30,6 @@ export default function SearchGif() {
 
   return (
     <div>
-      <h5>Login</h5>
       <h3>Search Giphy:</h3>
       <input
         onKeyDown={(e) => {
