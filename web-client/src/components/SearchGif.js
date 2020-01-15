@@ -9,7 +9,7 @@ export default function SearchGif() {
       .then(response => response.json())
       .then(response => {
         console.log(response);
-      })
+      });
   }, []);
 
   const search = async(event) => {

@@ -8,6 +8,7 @@ const User = require("./models").User;
 connectToDatabase();
 
 app.use(cors());
+
 app.get("/", async (req, res) => {
   try {
     const user = await User.findById(1);
@@ -17,6 +18,35 @@ app.get("/", async (req, res) => {
     res.status(422).send(error);
   }
 });
+
+app.post('/register', async (req, res) => {
+  console.log(req.body);
+  User.create({
+    username: req.body.un,
+    password: req.body.pw
+  }).then(result => {
+    res.sendStatus(result);
+  });
+});
+
+app.post('/login', async (req, res) => {
+  const un = req.body.un;
+  const pw = req.body.pw;
+  try {
+    const user = await User.findByOne({ username: un });
+
+    if (un != null && pw != null) {
+      if(un === user.username && pw === user.password) {
+        res.sendStatus(200);
+      }
+      res.sendStatus(401);
+    }
+    res.sendStatus(400);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
 app.listen(5000, () => console.log("The node.js app is listening on port 5000."));
 
 function connectToDatabase() {
