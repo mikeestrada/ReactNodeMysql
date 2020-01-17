@@ -9,6 +9,10 @@ connectToDatabase();
 
 app.use(cors());
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+
 app.get("/", async (req, res) => {
   try {
     const user = await User.findById(1);
@@ -20,12 +24,14 @@ app.get("/", async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-  console.log(req.body);
+  console.log('req : ' + req);
+  console.log('req body: ' + req.body);
   User.create({
     username: req.body.un,
     password: req.body.pw
   }).then(result => {
-    res.sendStatus(result);
+    console.log(('result: ' + result));
+    res.send(result);
   });
 });
 

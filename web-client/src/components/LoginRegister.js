@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import crypt from 'bcryptjs'
 
 const saltRounds = 10;
@@ -7,9 +7,14 @@ export default function Login() {
   const [register, setRegister] = useState({});
   const [login, setLogin] = useState({});
 
-  const loginToAccount = async() => {
+  useEffect(() => {}, [register]);
+
+  const loginToAccount = async () => {
     await crypt.genSalt(saltRounds, (err, salt) => {
       crypt.hash(login.pw, salt, (err, hash) => {
+        if (err) {
+          console.log(err);
+        }
         fetch('http://localhost:5000/login', {
           method: 'POST',
           body: {
@@ -28,13 +33,16 @@ export default function Login() {
     });
   };
 
-  const registerAccount = async() => {
-    await crypt.genSalt(saltRounds, (err, salt) => {
-      crypt.hash(login.pw, salt, (err, hash) => {
+  const registerAccount = () => {
+    crypt.genSalt(saltRounds, (err, salt) => {
+      crypt.hash(register.pw, salt, (err, hash) => {
+        if (err) {
+          console.log(err);
+        }
         fetch('http://localhost:5000/register', {
           method: 'POST',
           body: {
-            un: login.un,
+            un: register.un,
             pw: hash
           }
         })
@@ -43,7 +51,7 @@ export default function Login() {
             console.log(response);
           })
           .catch((err) => {
-            console.log('Error logging in: ' + err);
+            console.log('Error registering in: ' + err);
           });
       });
     });
@@ -55,20 +63,20 @@ export default function Login() {
       <br/>
       <form>
         <input type="text" placeholder="email"
-          onChange={(e) => {
-            setLogin({
-              ...login,
-              un: e.target.value
-            });
-          }}
+               onChange={(e) => {
+                 setLogin({
+                   ...login,
+                   un: e.target.value
+                 });
+               }}
         />
         <input type="password" placeholder="password"
-           onChange={(e) => {
-             setLogin({
-               ...login,
-               pw: e.target.value
-             });
-          }}
+               onChange={(e) => {
+                 setLogin({
+                   ...login,
+                   pw: e.target.value
+                 });
+               }}
         />
         <input type="submit" onClick={loginToAccount}/>
       </form>
@@ -77,25 +85,25 @@ export default function Login() {
       <br/>
       Or register:
       <br/>
-      <form>
-        <input type="text" placeholder="email"
-           onChange={(e) => {
-             setRegister({
-               ...register,
-               un: e.target.value
-             });
-           }}
-        />
-        <input type="password" placeholder="password"
-           onChange={(e) => {
-             setRegister({
-               ...login,
-               pw: e.target.value
-             });
-           }}
-        />
-        <input type="submit" onClick={registerAccount}/>
-      </form>
+
+      <input type="text" placeholder="email"
+             onChange={(e) => {
+               setRegister({
+                 ...register,
+                 un: e.target.value
+               });
+             }}
+      />
+      <input type="password" placeholder="password"
+             onChange={(e) => {
+               setRegister({
+                 ...register,
+                 pw: e.target.value
+               });
+             }}
+      />
+      <input type="submit" onClick={registerAccount}/>
+
     </div>
   );
 }

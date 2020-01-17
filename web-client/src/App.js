@@ -5,7 +5,7 @@ import {
   Link
 } from 'react-router-dom';
 import SearchGif from './components/SearchGif';
-import Login from './components/Login';
+import Login from './components/LoginRegister';
 
 export default function App() {
 
