@@ -7,10 +7,19 @@ export default function Login() {
   const [register, setRegister] = useState({});
   const [login, setLogin] = useState({});
 
-  useEffect(() => {}, [register]);
+  useEffect(() => {
+    fetch('http://localhost:5000')
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+      });
+  }, []);
 
-  const loginToAccount = async () => {
-    await crypt.genSalt(saltRounds, (err, salt) => {
+  useEffect(() => {
+  }, [register]);
+
+  const loginToAccount = () => {
+    crypt.genSalt(saltRounds, (err, salt) => {
       crypt.hash(login.pw, salt, (err, hash) => {
         if (err) {
           console.log(err);
@@ -61,25 +70,24 @@ export default function Login() {
     <div>
       Login to view your saved gifs:
       <br/>
-      <form>
-        <input type="text" placeholder="email"
-               onChange={(e) => {
-                 setLogin({
-                   ...login,
-                   un: e.target.value
-                 });
-               }}
-        />
-        <input type="password" placeholder="password"
-               onChange={(e) => {
-                 setLogin({
-                   ...login,
-                   pw: e.target.value
-                 });
-               }}
-        />
-        <input type="submit" onClick={loginToAccount}/>
-      </form>
+
+      <input type="text" placeholder="email"
+             onChange={(e) => {
+               setLogin({
+                 ...login,
+                 un: e.target.value
+               });
+             }}
+      />
+      <input type="password" placeholder="password"
+             onChange={(e) => {
+               setLogin({
+                 ...login,
+                 pw: e.target.value
+               });
+             }}
+      />
+      <input type="submit" onClick={loginToAccount}/>
       <br/>
       <br/>
       <br/>

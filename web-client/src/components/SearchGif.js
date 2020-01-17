@@ -1,16 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 
 export default function SearchGif() {
   const [images, updateImages] = useState([]);
   const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('http://localhost:5000')
-      .then(response => response.json())
-      .then(response => {
-        console.log(response);
-      });
-  }, []);
 
   const search = async(event) => {
     if (event.key === 'Enter') {

@@ -10,22 +10,23 @@ connectToDatabase();
 app.use(cors());
 
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
+  console.log('in root, getting all');
   try {
-    const user = await User.findById(1);
-    const response = { message: `This response came from the node.js app. User ${user.username} is on the database.` };
-    res.send(response);
+    const users = User.getAll();
+    console.log(users);
+    res.send(users);
   } catch (error) {
     res.status(422).send(error);
   }
 });
 
 app.post('/register', async (req, res) => {
-  console.log('req : ' + req);
-  console.log('req body: ' + req.body);
   User.create({
     username: req.body.un,
     password: req.body.pw
@@ -36,12 +37,20 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+  console.log('in login, logging in');
   const un = req.body.un;
   const pw = req.body.pw;
-  try {
-    const user = await User.findByOne({ username: un });
 
+  try {
+    console.log('username: ' + user.username);
     if (un != null && pw != null) {
+      const user = User.findAll({
+        where: {
+          username: un,
+          password: pw
+        }
+      });
+
       if(un === user.username && pw === user.password) {
         res.sendStatus(200);
       }
@@ -49,6 +58,7 @@ app.post('/login', async (req, res) => {
     }
     res.sendStatus(400);
   } catch (error) {
+    console.log('err: ' + error);
     res.status(404).send(error);
   }
 });
