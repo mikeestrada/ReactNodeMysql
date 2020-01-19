@@ -8,28 +8,31 @@ export default function Login() {
   const [login, setLogin] = useState({});
 
   useEffect(() => {
-    fetch('http://localhost:5000')
-      .then(response => response.json())
-      .then(response => {
-        console.log(response);
-      });
-  }, []);
-
-  useEffect(() => {
   }, [register]);
 
-  const loginToAccount = () => {
-    crypt.genSalt(saltRounds, (err, salt) => {
+  useEffect(() => {
+  }, [login]);
+
+  const loginToAccount = async() => {
+    await crypt.genSalt(saltRounds, (err, salt) => {
       crypt.hash(login.pw, salt, (err, hash) => {
         if (err) {
           console.log(err);
         }
         fetch('http://localhost:5000/login', {
           method: 'POST',
-          body: {
+          body: JSON.stringify({
             un: login.un,
             pw: hash
-          }
+          }),
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          redirect: 'follow',
+          referrerPolicy: 'no-referrer',
         })
           .then(response => response.json())
           .then(response => {

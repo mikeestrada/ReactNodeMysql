@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require('body-parser');
 const app = express();
 const cors = require("cors");
 const Sequelize = require("sequelize");
@@ -8,23 +9,10 @@ const User = require("./models").User;
 connectToDatabase();
 
 app.use(cors());
-
-const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(bodyParser.json());
-
-app.get("/", (req, res) => {
-  console.log('in root, getting all');
-  try {
-    const users = User.getAll();
-    console.log(users);
-    res.send(users);
-  } catch (error) {
-    res.status(422).send(error);
-  }
-});
 
 app.post('/register', async (req, res) => {
   User.create({
@@ -36,10 +24,11 @@ app.post('/register', async (req, res) => {
   });
 });
 
-app.post('/login', async (req, res) => {
-  console.log('in login, logging in');
+app.post('/login', (req, res) => {
   const un = req.body.un;
   const pw = req.body.pw;
+  console.log('username: ' + un);
+  console.log('pw: ' + pw);
 
   try {
     console.log('username: ' + user.username);
