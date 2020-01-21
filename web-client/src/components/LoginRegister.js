@@ -1,11 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import crypt from 'bcryptjs'
+import {InputContext} from "../context/InputContext";
 
 const saltRounds = 10;
 
 export default function Login() {
   const [register, setRegister] = useState({});
   const [login, setLogin] = useState({});
+  const {state, updateLogin} = useContext(InputContext);
 
   useEffect(() => {
   }, [register]);
@@ -31,12 +33,14 @@ export default function Login() {
           headers: {
             'Content-Type': 'application/json'
           },
-          redirect: 'follow',
           referrerPolicy: 'no-referrer',
         })
-          .then(response => response.json())
           .then(response => {
-            console.log(response);
+            console.log(response.blob());
+        })
+          .then(() => {
+            updateLogin(true);
+            console.log('login state: ' + state)
           })
           .catch((err) => {
             console.log('Error logging in: ' + err);

@@ -27,25 +27,20 @@ app.post('/register', async (req, res) => {
 app.post('/login', (req, res) => {
   const un = req.body.un;
   const pw = req.body.pw;
-  console.log('username: ' + un);
-  console.log('pw: ' + pw);
 
   try {
-    console.log('username: ' + user.username);
     if (un != null && pw != null) {
-      const user = User.findAll({
+      User.findAll({
         where: {
           username: un,
-          password: pw
         }
-      });
-
-      if(un === user.username && pw === user.password) {
+      }).then(usersFound => {
+        if (usersFound.length < 1) {
+          res.status(404).send(error);
+        }
         res.sendStatus(200);
-      }
-      res.sendStatus(401);
+      });
     }
-    res.sendStatus(400);
   } catch (error) {
     console.log('err: ' + error);
     res.status(404).send(error);
