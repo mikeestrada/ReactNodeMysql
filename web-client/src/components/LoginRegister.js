@@ -40,7 +40,9 @@ export default function Login() {
           .then((user) => user.json())
           .then((loginResponse) => {
             updateLogin(true);
-            updateUser(loginResponse.user[0]);
+            if(loginResponse.user) {
+              updateUser(loginResponse.user[0]);
+            }
             updateUserLikes(loginResponse.likes);
             history.push('/account')
           })

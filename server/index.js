@@ -44,6 +44,7 @@ app.post('/login', (req, res) => {
         userToReturn = usersFound[0];
 
         UserLike.findAll({
+          attributes: ['userId', 'gifId'],
           where: {
             userId: userToReturn.id
           }
