@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
+import { useHistory } from "react-router-dom";
 import crypt from 'bcryptjs'
 import {InputContext} from "../context/InputContext";
 
@@ -8,6 +9,7 @@ export default function Login() {
   const [register, setRegister] = useState({});
   const [login, setLogin] = useState({});
   const {state, updateLogin} = useContext(InputContext);
+  const history = useHistory();
 
   useEffect(() => {
   }, [register]);
@@ -35,12 +37,9 @@ export default function Login() {
           },
           referrerPolicy: 'no-referrer',
         })
-          .then(response => {
-            console.log(response.blob());
-        })
           .then(() => {
             updateLogin(true);
-            console.log('login state: ' + state)
+            history.push('/account')
           })
           .catch((err) => {
             console.log('Error logging in: ' + err);
