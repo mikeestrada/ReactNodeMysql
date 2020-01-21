@@ -38,7 +38,7 @@ app.post('/login', (req, res) => {
         if (usersFound.length < 1) {
           res.status(404).send(error);
         }
-        res.sendStatus(200);
+        res.send(usersFound);
       });
     }
   } catch (error) {

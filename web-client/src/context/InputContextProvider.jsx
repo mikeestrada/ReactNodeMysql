@@ -4,7 +4,8 @@ import {InputContext} from "./InputContext";
 export function InputContextProvider({children}) {
 
     const [state, updateState] = useState({
-        loggedIn: false
+        loggedIn: false,
+        user: {},
     });
 
     const updateLogin = (value) => {
@@ -14,10 +15,18 @@ export function InputContextProvider({children}) {
         });
     };
 
+    const updateUser = (value) => {
+        updateState({
+            ...state,
+            user: value,
+        });
+    };
+
     return (
         <InputContext.Provider value={{
             state,
-            updateLogin
+            updateLogin,
+            updateUser
         }}>
             {children}
         </InputContext.Provider>

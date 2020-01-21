@@ -1,10 +1,14 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {InputContext} from "../context/InputContext";
 
 export default function LoginHeader() {
   const {state, updateLogin} = useContext(InputContext);
   const history = useHistory();
+
+  useEffect(() => {
+
+  }, [state]);
 
   const logOut = () => {
     updateLogin(false);

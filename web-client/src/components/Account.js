@@ -1,8 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
+import {InputContext} from "../context/InputContext";
 
 export default function Account() {
-  useEffect(() => {
+  const {state} = useContext(InputContext);
 
+  useEffect(() => {
+    console.log(state.user);
   }, []);
 
   return (
