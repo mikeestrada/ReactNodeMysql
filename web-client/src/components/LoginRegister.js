@@ -8,7 +8,7 @@ const saltRounds = 10;
 export default function Login() {
   const [register, setRegister] = useState({});
   const [login, setLogin] = useState({});
-  const {state, updateLogin, updateUser} = useContext(InputContext);
+  const {updateLogin, updateUser, updateUserLikes} = useContext(InputContext);
   const history = useHistory();
 
   useEffect(() => {
@@ -38,9 +38,10 @@ export default function Login() {
           referrerPolicy: 'no-referrer',
         })
           .then((user) => user.json())
-          .then((user) => {
+          .then((loginResponse) => {
             updateLogin(true);
-            updateUser(user[0]);
+            updateUser(loginResponse.user[0]);
+            updateUserLikes(loginResponse.likes);
             history.push('/account')
           })
           .catch((err) => {

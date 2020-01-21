@@ -5,6 +5,7 @@ const cors = require("cors");
 const Sequelize = require("sequelize");
 const dbConfig = require("./config/config.json").development;
 const User = require("./models").User;
+const UserLike = require("./models").UserLike;
 
 connectToDatabase();
 
@@ -27,6 +28,8 @@ app.post('/register', async (req, res) => {
 app.post('/login', (req, res) => {
   const un = req.body.un;
   const pw = req.body.pw;
+  let userToReturn = null;
+  let userLikes = [];
 
   try {
     if (un != null && pw != null) {
@@ -38,13 +41,28 @@ app.post('/login', (req, res) => {
         if (usersFound.length < 1) {
           res.status(404).send(error);
         }
-        res.send(usersFound);
+        userToReturn = usersFound[0];
+
+        UserLike.findAll({
+          where: {
+            userId: userToReturn.id
+          }
+        })
+          .then(likesFound => {
+            console.log('likesFound: ' + likesFound);
+            userLikes = likesFound;
+          })
+          .catch(err => console.log('\nError getting user likes: ' + err));
       });
     }
   } catch (error) {
     console.log('err: ' + error);
     res.status(404).send(error);
   }
+  res.send({
+    user: userToReturn,
+    likes: userLikes ? userLikes : null
+  })
 });
 
 app.listen(5000, () => console.log("The node.js app is listening on port 5000."));

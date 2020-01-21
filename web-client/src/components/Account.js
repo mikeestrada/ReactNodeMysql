@@ -6,6 +6,7 @@ export default function Account() {
 
   useEffect(() => {
     console.log(state.user);
+    //api.giphy.com/v1/gifs/{gif_id}
   }, []);
 
   return (

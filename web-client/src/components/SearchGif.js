@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import {InputContext} from "../context/InputContext";
 
 export default function SearchGif() {
   const [images, updateImages] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const {state} = useContext(InputContext);
 
   const search = async(event) => {
     if (event.key === 'Enter') {
@@ -16,9 +18,13 @@ export default function SearchGif() {
         })
         .catch(err => console.log(err));
       setLoading(false);
-      console.log(images.list);
     }
   };
+
+  function likeThis(imageId) {
+    console.log('image id: ' + imageId);
+    console.log('user id: ' + state.user.id);
+  }
 
   return (
     <div>
@@ -32,7 +38,11 @@ export default function SearchGif() {
       { !isLoading &&
       <ul>
         {images.list.map((image) => {
-          return <li key={image.id}><img alt="img" src={image.images.downsized.url}/></li>
+          return <li key={image.id}>
+            <img alt="img" src={image.images.downsized.url} />
+            <br />
+            <button onClick={() => {likeThis(image.id)}}>Like</button>
+          </li>
         })}
       </ul>
       }

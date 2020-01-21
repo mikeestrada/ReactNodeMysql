@@ -7,7 +7,7 @@ export default function LoginHeader() {
   const history = useHistory();
 
   useEffect(() => {
-
+    console.log('from header: ' + state.loggedIn)
   }, [state]);
 
   const logOut = () => {

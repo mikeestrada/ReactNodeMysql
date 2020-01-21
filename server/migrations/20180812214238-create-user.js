@@ -24,18 +24,6 @@ module.exports = {
             allowNull: false,
             type: Sequelize.DATE
           }
-        }),
-        queryInterface.createTable('User_favs', {
-          userId: {
-            allowNull: false,
-            primaryKey: true,
-            type: Sequelize.INTEGER
-          },
-          giphyId: {
-            allowNull: false,
-            primaryKey: true,
-            type: Sequelize.INTEGER
-          }
         })
       ]);
     });
