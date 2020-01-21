@@ -9,6 +9,7 @@ export default function SearchGif() {
   const search = async(event) => {
     if (event.key === 'Enter') {
       setLoading(true);
+      console.log(state.user);
       await fetch('http://api.giphy.com/v1/gifs/search?api_key=BazmPWlcSFXdpZTGesTTPNsjlt1MuhBH&q=' + event.target.value)
         .then(response => response.json())
         .then(response => {

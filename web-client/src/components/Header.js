@@ -17,9 +17,19 @@ export default function LoginHeader() {
 
   const showLogin = () => {
     if (state.loggedIn) {
-      return <h5><a onClick={logOut}>Logout</a></h5>
+      return (
+        <div>
+          <h5><a onClick={logOut}>Logout</a></h5>
+          <h5><Link to="/">Home</Link></h5>
+        </div>
+      );
     } else {
-      return <h5><Link to="/login">Login</Link></h5>
+      return (
+        <div>
+          <h5><Link to="/login">Login</Link></h5>
+          <h5><Link to="/">Home</Link></h5>
+        </div>
+      );
     }
   };
 

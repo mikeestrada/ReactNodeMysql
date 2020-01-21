@@ -43,7 +43,9 @@ export default function Login() {
             if(loginResponse.user) {
               updateUser(loginResponse.user[0]);
             }
-            updateUserLikes(loginResponse.likes);
+            if (loginResponse.likes.length > 1) {
+              updateUserLikes(loginResponse.likes);
+            }
             history.push('/account')
           })
           .catch((err) => {
