@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+//ENDPOINTS
 app.get('/user-like', async(req, res) => {
   console.log(('USERid : ' + req.query.userId));
 
@@ -99,6 +100,7 @@ app.post('/login', async(req, res) => {
 
 app.listen(5000, () => console.log("The node.js app is listening on port 5000."));
 
+//DB CONFIG
 function connectToDatabase() {
   const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
     host: dbConfig.host,

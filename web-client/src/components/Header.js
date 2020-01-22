@@ -7,6 +7,10 @@ export default function LoginHeader() {
   const history = useHistory();
 
   useEffect(() => {
+    console.log('state from header: ' + JSON.stringify(state))
+  }, []);
+
+  useEffect(() => {
     console.log('from header: ' + state.loggedIn)
   }, [state]);
 
@@ -21,6 +25,7 @@ export default function LoginHeader() {
         <div>
           <h5><a onClick={logOut}>Logout</a></h5>
           <h5><Link to="/">Home</Link></h5>
+          <h5><Link to="/account">Account</Link></h5>
         </div>
       );
     } else {

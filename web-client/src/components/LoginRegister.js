@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import { useHistory } from "react-router-dom";
 import crypt from 'bcryptjs'
 import {InputContext} from "../context/InputContext";
+import { browserHistory } from "react-router";
 
 const saltRounds = 10;
 
@@ -39,14 +40,16 @@ export default function Login() {
         })
           .then((user) => user.json())
           .then((loginResponse) => {
-            updateLogin(true);
+
             if(loginResponse.user) {
-              updateUser(loginResponse.user);
+              updateUser('user', loginResponse.user);
+              updateLogin(true);
             }
             if (loginResponse.likes.length > 1) {
               updateUserLikes(loginResponse.likes);
             }
-            history.push('/account')
+
+            browserHistory.push('/account')
           })
           .catch((err) => {
             console.log('Error logging in: ' + err);

@@ -16,11 +16,11 @@ export function InputContextProvider({children}) {
         });
     };
 
-    const updateUser = (value) => {
-        updateState({
-            ...state,
-            user: value,
-        });
+    const updateUser = (key, value) => {
+      updateState({
+        ...state,
+        [key]: value,
+      });
     };
 
     const updateUserLikes = (value) => {
