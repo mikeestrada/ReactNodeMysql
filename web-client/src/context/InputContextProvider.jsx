@@ -26,7 +26,7 @@ export function InputContextProvider({children}) {
     const updateUserLikes = (value) => {
         updateState({
             ...state,
-            userLikes: value,
+            userLikes: [...state.userLikes, value],
         });
     };
 

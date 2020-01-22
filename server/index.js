@@ -15,6 +15,37 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+app.get('/user-like', async(req, res) => {
+  console.log(('USERid : ' + req.query.userId));
+
+  UserLike.findAll({
+    attributes: ['userId', 'gifId'],
+    where: {
+      userId: req.query.userId
+    }
+  }).then(response => {
+
+    console.log(('USER-LIKES : ' + response));
+    res.send(response);
+
+  }).catch(err => res.send(err))
+});
+
+app.post('/user-like/add', async (req, res) => {
+  console.log(('USERid : ' + req.body.userId));
+  console.log(('gifId: ' + req.body.gifId));
+
+  await UserLike.create({
+    userId: req.body.userId,
+    gifId: req.body.gifId
+  }, {
+    fields: ['userId', 'gifId']
+  }).then(result => {
+    console.log(('USERLIKE CREATED: ' + result));
+    res.send(result);
+  }).catch(err => res.status(400).send(err));
+});
+
 app.post('/register', async (req, res) => {
   User.create({
     username: req.body.un,
@@ -25,7 +56,7 @@ app.post('/register', async (req, res) => {
   });
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', async(req, res) => {
   const un = req.body.un;
   const pw = req.body.pw;
   let userToReturn = null;
@@ -42,6 +73,7 @@ app.post('/login', (req, res) => {
           res.status(404).send(error);
         }
         userToReturn = usersFound[0];
+        console.log('USER FOUND1: ' + userToReturn);
 
         UserLike.findAll({
           attributes: ['userId', 'gifId'],
@@ -50,8 +82,11 @@ app.post('/login', (req, res) => {
           }
         })
           .then(likesFound => {
-            console.log('likesFound: ' + likesFound);
             userLikes = likesFound;
+            res.send({
+              user: userToReturn,
+              likes: userLikes.length > 1 ? userLikes : []
+            })
           })
           .catch(err => console.log('\nError getting user likes: ' + err));
       });
@@ -60,10 +95,6 @@ app.post('/login', (req, res) => {
     console.log('err: ' + error);
     res.status(404).send(error);
   }
-  res.send({
-    user: userToReturn,
-    likes: userLikes ? userLikes : null
-  })
 });
 
 app.listen(5000, () => console.log("The node.js app is listening on port 5000."));

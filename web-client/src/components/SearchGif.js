@@ -25,6 +25,20 @@ export default function SearchGif() {
   function likeThis(imageId) {
     console.log('image id: ' + imageId);
     console.log('user id: ' + state.user.id);
+    fetch('http://localhost:5000/user-like/add', {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: state.user.id,
+        gifId: imageId
+      }),
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      referrerPolicy: 'no-referrer',
+    }).then(response => console.log('RESPONSE:' + JSON.stringify(response)));
   }
 
   return (

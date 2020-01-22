@@ -41,7 +41,7 @@ export default function Login() {
           .then((loginResponse) => {
             updateLogin(true);
             if(loginResponse.user) {
-              updateUser(loginResponse.user[0]);
+              updateUser(loginResponse.user);
             }
             if (loginResponse.likes.length > 1) {
               updateUserLikes(loginResponse.likes);
