@@ -5,7 +5,7 @@ export default function Account() {
   const {state} = useContext(InputContext);
 
   useEffect(() => {
-    console.log(state);
+    console.log('STATE FROM ACC: ' + JSON.stringify(state));
     if(state.user) {
       fetch('http://localhost:5000/user-like?userId=' + state.user.id)
         .then(res => console.log(res.json()))

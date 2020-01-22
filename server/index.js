@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({
 
 //ENDPOINTS
 app.get('/user-like', async(req, res) => {
-  console.log(('USERid : ' + req.query.userId));
+  console.log(('USER ID : ' + req.query.userId));
 
   UserLike.findAll({
     attributes: ['userId', 'gifId'],
@@ -29,12 +29,12 @@ app.get('/user-like', async(req, res) => {
     console.log(('USER-LIKES : ' + response));
     res.send(response);
 
-  }).catch(err => res.send(err))
+  }).catch(err => console.log('ERROR GETTING FAV' + err))
 });
 
 app.post('/user-like/add', async (req, res) => {
-  console.log(('USERid : ' + req.body.userId));
-  console.log(('gifId: ' + req.body.gifId));
+  console.log(('USER ID : ' + req.body.userId));
+  console.log(('GIF ID: ' + req.body.gifId));
 
   await UserLike.create({
     userId: req.body.userId,
@@ -42,9 +42,9 @@ app.post('/user-like/add', async (req, res) => {
   }, {
     fields: ['userId', 'gifId']
   }).then(result => {
-    console.log(('USERLIKE CREATED: ' + result));
+    console.log(('FAV CREATED: ' + result));
     res.send(result);
-  }).catch(err => res.status(400).send(err));
+  }).catch(err => console.log('ERROR SAVING FAV' + err));
 });
 
 app.post('/register', async (req, res) => {
@@ -52,9 +52,9 @@ app.post('/register', async (req, res) => {
     username: req.body.un,
     password: req.body.pw
   }).then(result => {
-    console.log(('result: ' + result));
+    console.log(('USER CREATED: ' + result));
     res.send(result);
-  });
+  }).catch(err => console.log('ERROR REGISTERING' + err));
 });
 
 app.post('/login', async(req, res) => {
@@ -74,7 +74,6 @@ app.post('/login', async(req, res) => {
           res.status(404).send(error);
         }
         userToReturn = usersFound[0];
-        console.log('USER FOUND1: ' + userToReturn);
 
         UserLike.findAll({
           attributes: ['userId', 'gifId'],

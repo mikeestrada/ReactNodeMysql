@@ -7,7 +7,7 @@ const saltRounds = 10;
 export default function Login() {
   const [register, setRegister] = useState({});
   const [login, setLogin] = useState({});
-  const {updateLogin, updateUser, updateUserLikes} = useContext(InputContext);
+  const {state, logInUser, updateUserLikes} = useContext(InputContext);
 
   useEffect(() => {
   }, [register]);
@@ -38,9 +38,9 @@ export default function Login() {
         .then((user) => user.json())
         .then((loginResponse) => {
 
-            if(loginResponse.user) {
-              updateUser('user', loginResponse.user);
-              updateLogin(true);
+          console.log('STATE: ', state);
+          if(loginResponse.user) {
+              logInUser('user', loginResponse.user);
             }
             if (loginResponse.likes.length > 1) {
               updateUserLikes(loginResponse.likes);

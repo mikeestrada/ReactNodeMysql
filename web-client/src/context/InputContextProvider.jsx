@@ -9,16 +9,10 @@ export function InputContextProvider({children}) {
         userLikes: []
     });
 
-    const updateLogin = (value) => {
-        updateState({
-            ...state,
-            loggedIn: value,
-        });
-    };
-
-    const updateUser = (key, value) => {
+    const logInUser = (key, value) => {
       updateState({
         ...state,
+        loggedIn: true,
         [key]: value,
       });
     };
@@ -33,8 +27,7 @@ export function InputContextProvider({children}) {
     return (
         <InputContext.Provider value={{
             state,
-            updateLogin,
-            updateUser,
+            logInUser,
             updateUserLikes
         }}>
             {children}

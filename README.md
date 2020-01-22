@@ -36,3 +36,4 @@ docker-compose up --build
 2. Adding gifs to faves
 3. Retrieving gifs
 4. Logout is local
+5. Registration
