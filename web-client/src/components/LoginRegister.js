@@ -1,8 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { useHistory } from "react-router-dom";
 import crypt from 'bcryptjs'
 import {InputContext} from "../context/InputContext";
-import { browserHistory } from "react-router";
 
 const saltRounds = 10;
 
@@ -10,7 +8,6 @@ export default function Login() {
   const [register, setRegister] = useState({});
   const [login, setLogin] = useState({});
   const {updateLogin, updateUser, updateUserLikes} = useContext(InputContext);
-  const history = useHistory();
 
   useEffect(() => {
   }, [register]);
@@ -38,8 +35,8 @@ export default function Login() {
           },
           referrerPolicy: 'no-referrer',
         })
-          .then((user) => user.json())
-          .then((loginResponse) => {
+        .then((user) => user.json())
+        .then((loginResponse) => {
 
             if(loginResponse.user) {
               updateUser('user', loginResponse.user);
@@ -48,12 +45,10 @@ export default function Login() {
             if (loginResponse.likes.length > 1) {
               updateUserLikes(loginResponse.likes);
             }
-
-            browserHistory.push('/account')
-          })
-          .catch((err) => {
-            console.log('Error logging in: ' + err);
-          });
+        })
+        .catch((err) => {
+          console.log('Error logging in: ' + err);
+        });
       });
     });
   };

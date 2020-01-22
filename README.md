@@ -30,3 +30,9 @@ If you change your Dockerfile and must rebuild the Node.js or React images, run:
 ```
 docker-compose up --build
 ```
+
+## Known bugs/issues
+1. Login not authenticating via token
+2. Adding gifs to faves
+3. Retrieving gifs
+4. Logout is local

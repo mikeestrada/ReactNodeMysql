@@ -8,8 +8,10 @@ module.exports = {
       "UserLike",
       [
         {
-          userId: "admin",
+          userId: "1",
           gifId: "xT9IgG50Fb7Mi0prBC",
+          createdAt: timestamp,
+          updatedAt: timestamp,
         },
       ],
       {}
