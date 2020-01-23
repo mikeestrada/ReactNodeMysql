@@ -1,13 +1,14 @@
 import React, {useState, useEffect, useContext} from 'react';
 import crypt from 'bcryptjs'
 import {InputContext} from "../context/InputContext";
+import {post} from "../service/api";
 
 const saltRounds = 10;
 
 export default function Login() {
   const [register, setRegister] = useState({});
   const [login, setLogin] = useState({});
-  const {state, logInUser, updateUserLikes} = useContext(InputContext);
+  const {state, logInUser} = useContext(InputContext);
 
   useEffect(() => {
   }, [register]);
@@ -21,29 +22,16 @@ export default function Login() {
         if (err) {
           console.log(err);
         }
-        fetch('http://localhost:5000/login', {
-          method: 'POST',
-          body: JSON.stringify({
+        post('http://localhost:5000/login', JSON.stringify({
             un: login.un,
             pw: hash
-          }),
-          mode: 'cors',
-          cache: 'no-cache',
-          credentials: 'same-origin',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          referrerPolicy: 'no-referrer',
-        })
+          }))
         .then((user) => user.json())
         .then((loginResponse) => {
 
           console.log('STATE: ', state);
           if(loginResponse.user) {
               logInUser('user', loginResponse.user);
-            }
-            if (loginResponse.likes.length > 1) {
-              updateUserLikes(loginResponse.likes);
             }
         })
         .catch((err) => {
@@ -59,13 +47,10 @@ export default function Login() {
         if (err) {
           console.log(err);
         }
-        fetch('http://localhost:5000/register', {
-          method: 'POST',
-          body: {
+        post('http://localhost:5000/register', JSON.stringify({
             un: register.un,
             pw: hash
-          }
-        })
+          }))
           .then(response => response.json())
           .then(response => {
             console.log(response);

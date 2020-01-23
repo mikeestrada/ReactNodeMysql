@@ -24,6 +24,15 @@ module.exports = {
             allowNull: false,
             type: Sequelize.DATE
           }
+        }),
+        queryInterface.createTable('UserLike', {
+          userId: {
+            type: Sequelize.STRING,
+          },
+          gifId: {
+            type: Sequelize.STRING,
+            autoIncrement: false,
+          }
         })
       ]);
     });

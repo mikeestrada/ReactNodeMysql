@@ -1,12 +1,13 @@
 import React, {useState, useContext} from 'react';
 import {InputContext} from "../context/InputContext";
+import {post} from "../service/api";
 
 export default function SearchGif() {
   const [images, updateImages] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const {state} = useContext(InputContext);
 
-  const search = async(event) => {
+  const search = async (event) => {
     if (event.key === 'Enter') {
       setLoading(true);
       console.log(state.user);
@@ -25,20 +26,11 @@ export default function SearchGif() {
   function likeThis(imageId) {
     console.log('image id: ' + imageId);
     console.log('user id: ' + state.user.id);
-    fetch('http://localhost:5000/user-like/add', {
-      method: 'POST',
-      body: JSON.stringify({
-        userId: state.user.id,
-        gifId: imageId
-      }),
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      referrerPolicy: 'no-referrer',
-    }).then(response => console.log('RESPONSE:' + JSON.stringify(response)));
+    post('http://localhost:5000/user-like/add', JSON.stringify({
+      userId: state.user.id,
+      gifId: imageId
+    }))
+      .then(response => console.log('RESPONSE:' + JSON.stringify(response)));
   }
 
   return (
@@ -49,16 +41,21 @@ export default function SearchGif() {
           search(e)
         }}
       />
-      { isLoading && <div>loading gifs</div> }
-      { !isLoading &&
+      {isLoading && <div>loading gifs</div>}
+      {!isLoading &&
       <ul>
-        {images.list.map((image) => {
-          return <li key={image.id}>
-            <img alt="img" src={image.images.downsized.url} />
-            <br />
-            <button onClick={() => {likeThis(image.id)}}>Like</button>
-          </li>
-        })}
+        {
+          images.list.map((image) => {
+            return <li key={image.id}>
+              <img alt="img" src={image.images.downsized.url}/>
+              <br/>
+              <button onClick={() => {
+                likeThis(image.id)
+              }}>Like
+              </button>
+            </li>
+          })
+        }
       </ul>
       }
     </div>
