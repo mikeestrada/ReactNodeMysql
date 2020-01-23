@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {InputContext} from "../context/InputContext";
 
 export default function Account() {
