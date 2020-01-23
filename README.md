@@ -33,7 +33,6 @@ docker-compose up --build
 
 ## Known bugs/issues
 1. Login not authenticating via token
-2. Adding gifs to faves
-3. Retrieving gifs
+3. Rendering fave gifs
 4. Logout is local
-5. Registration
+5. Salting on the front end

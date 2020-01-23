@@ -3,7 +3,7 @@ import {Link, useHistory} from 'react-router-dom';
 import {InputContext} from "../context/InputContext";
 
 export default function LoginHeader() {
-  const {state, updateLogin} = useContext(InputContext);
+  const {state, logOutUser} = useContext(InputContext);
   const history = useHistory();
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function LoginHeader() {
   }, [state]);
 
   const logOut = () => {
-    updateLogin(false);
+    logOutUser();
     history.push('/');
   };
 

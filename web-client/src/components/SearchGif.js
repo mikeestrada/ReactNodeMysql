@@ -30,7 +30,7 @@ export default function SearchGif() {
       userId: state.user.id,
       gifId: imageId
     }))
-      .then(response => console.log('RESPONSE:' + JSON.stringify(response)));
+      .then(response => console.log('LIKED:' + JSON.stringify(response)));
   }
 
   return (
@@ -42,6 +42,7 @@ export default function SearchGif() {
         }}
       />
       {isLoading && <div>loading gifs</div>}
+
       {!isLoading &&
       <ul>
         {
@@ -51,7 +52,8 @@ export default function SearchGif() {
               <br/>
               <button onClick={() => {
                 likeThis(image.id)
-              }}>Like
+              }}>
+                Like
               </button>
             </li>
           })

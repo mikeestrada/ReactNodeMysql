@@ -2,61 +2,51 @@ import React, {useEffect, useState, useContext} from 'react';
 import {InputContext} from "../context/InputContext";
 
 export default function Account() {
-  const {state} = useContext(InputContext);
   const [faves, setFaves] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const [faveIds, setFaveIds] = useState([]);
-  let faveUrls = [];
+  const {state} = useContext(InputContext);
 
-  useEffect(() => {
-    console.log('STATE FROM ACC: ' + JSON.stringify(state));
-    if (state.user) {
-      fetchFaveIds();
-      // setFavImages();
-    }
-  }, []);
-
-  const fetchFaveIds = () => {
+  const getFavGifs = async () => {
     setLoading(true);
-    fetch('http://localhost:5000/user-like?userId=' + state.user.id)
+
+    await fetch('http://localhost:5000/user-like?userId=' + state.user.id)
       .then(res => res.json())
       .then(giphyArray => {
-        giphyArray.forEach(gif => {
-          fetch('http://api.giphy.com/v1/gifs/' + gif.gifId + '?api_key=BazmPWlcSFXdpZTGesTTPNsjlt1MuhBH&q=')
-            .then(res => res.json())
-            .then(res => {
-              faveUrls.push(res.data.images.downsized.url)
-            });
-        })
-      });
+
+        console.log('USER FAVE IDS: ', giphyArray);
+
+        giphyArray.forEach(faveId => {
+            fetch('http://api.giphy.com/v1/gifs/' + faveId.gifId + '?api_key=BazmPWlcSFXdpZTGesTTPNsjlt1MuhBH&q=')
+              .then(res => res.json())
+              .then(res => {
+                console.log('USER FAVES: ', res.data);
+                setFaves({
+                  list: res.data
+                });
+              })
+              .catch(err => console.log('ERROR: ', err));
+          });
+      })
+      .catch(err => console.log('getFavGifsERR: ', err));
     setLoading(false);
   };
 
-  const setFavImages = () => {
-    faveIds.forEach(id => {
-      fetch('http://api.giphy.com/v1/gifs/' + id + '?api_key=BazmPWlcSFXdpZTGesTTPNsjlt1MuhBH&q=')
-        .then(res => res.json())
-        .then(res => {
-          faves.push(res);
-        })
-    });
-  };
-
-  const showFaves = () => !isLoading
-    && faveUrls.length >= 1
-    && (faveUrls.map((faveUrl) => {
-      return (
-        <div>
-          <img alt="img" src={faveUrl}/>
-        </div>
-      );
-    })
-  );
-
   return (
     <div>
-      {!isLoading && <div>loading <b>your</b> gifs</div>}
-      {showFaves()}
+      <button onClick={() => getFavGifs()}>Load your gifs</button>
+
+      {/*{!isLoading &&*/}
+      {/*<ul>*/}
+        {/*{*/}
+          {/*faves.list.map((fav) => {*/}
+            {/*return <li key={fav.id}>*/}
+              {/*<img alt="img" src={fav.images.downsized.url}/>*/}
+              {/*<br/>*/}
+            {/*</li>*/}
+          {/*})*/}
+        {/*}*/}
+      {/*</ul>*/}
+      {/*}*/}
     </div>
   );
 }
